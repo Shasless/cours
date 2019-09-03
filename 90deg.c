@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 
-// pas finie
 
 int main() {
 
     int tailletab;
     char ***tab;
-
+    int a,b;
 
 
     printf(" array's size :\n ");
@@ -41,6 +39,14 @@ int main() {
     }
     printf("\n");
 
+
+    for(int i=0;i<tailletab;i++){
+        for(int j=0;j<tailletab;j++){
+
+            printf(" %s ",tab[tailletab-1-j][i]);}
+        printf("\n");
+    }
+    printf("\n");
 
 
     printf("test");
