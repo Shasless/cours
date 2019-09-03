@@ -1,51 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-void affichetab(int **tab,int tailletab, int rot);
+#include <string.h>
 
-void affichetab(int **tab,int tailletab, int rot){
 
-    for(int i=0;i<tailletab;i++){
-        for(int j=0;j<tailletab;j++){
-            if(rot==1){
-            printf(" %d ",tab[j][i]);}
-            else{
-            printf(" %d ",tab[i][j]);}
-
-        }
-        printf("\n");
-    }
-}
 
 
 int main() {
 
     int tailletab;
-    int **tab;
+    char ***tab;
 
 
-    printf(" Taille du tableau :\n ");
+
+    printf(" array's size :\n ");
     scanf("%d",&tailletab);
-    tab = malloc(tailletab* sizeof(int*));
-    for(int i=0;i<tailletab;i++){
-        tab[i]=malloc(tailletab* sizeof(int));
-    }
-
-    for(int i=0;i<tailletab;i++){
-        for(int j=0;j<tailletab;j++){
-            printf("Le nombre case [%d][%d]:\n",i,j);
-            scanf("%d",&tab[i][j]);
+    tab = (char ***) malloc (sizeof(char ***)*tailletab);
+    for (int h = 0; h < tailletab; h++) {
+        tab[h] = (char **) malloc(sizeof(char*)*tailletab);
+        for (int r = 0; r < tailletab; r++) {
+            tab[h][r] = (char *) malloc(sizeof(char)*tailletab);
         }
     }
 
-    affichetab(tab,tailletab,0);
-    printf("\n");
-    affichetab(tab,tailletab,1);
+
+    for (int h = 0; h < tailletab; h++) {
+        for (int r = 0; r < tailletab; r++) {
+            printf ("Enter Array Element [%d][%d] : ", h, r);
+            scanf ("%s", tab[h][r]);
+
+        }
+    }
 
 
 
+    // affichetab(tab,tailletab,0);
     for(int i=0;i<tailletab;i++){
-        free(tab[i]);
+        for(int j=0;j<tailletab;j++){
+            printf(" %s ",tab[i][j]);}
+        printf("\n");
+    }
+    printf("\n");
+
+
+
+    printf("test");
+    for (int h = 0; h < tailletab; h++) {
+        for (int r = 0; r < tailletab; r++) {
+            free(tab[h][r]);
+        }
+        free(tab[h]);
     }
     free(tab);
     return 0;
