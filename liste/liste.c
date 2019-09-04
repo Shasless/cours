@@ -129,6 +129,8 @@ char*  croissant(t_maillon** l){
     }
     return "VRAIX";
 }
+
+/*  EN COURS DE CODAGE
 void decaledroite(t_maillon** l){
     if(*l == NULL){
         *l = e;
@@ -156,7 +158,7 @@ void ajouter(t_maillon** l, t_maillon* e, int a){
         temp->suiv = e;
     }
 
-}
+}*/
 int main()
 {
     t_maillon* ma_liste = creer_t_maillon(5);
