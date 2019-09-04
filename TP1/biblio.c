@@ -9,9 +9,13 @@ typedef struct t_livre {
     float prix;
 } t_livre;
 
+
 int main(int argc, char *argv[]) {
     t_livre *livre = NULL;
-    int n = 0, nn = 0, c = 0;
+    int n = 0, nn = 0, c = 0, i;
+    char* temp[4];
+
+
     FILE *psave = NULL;
     FILE *bsave = NULL;
     psave = fopen("save.txt", "r");
@@ -26,7 +30,19 @@ int main(int argc, char *argv[]) {
         livre = malloc(n*sizeof(t_livre));
         while (fgets(line, sizeof line, bsave) != NULL)
         {
-            strcpy(livre[nn].titre, line);
+            i=0;
+            char *p = strtok (line, ",");
+            while (p != NULL)
+            {
+                temp[i++] = p;
+                p = strtok (NULL, ",");
+            }
+
+            strcpy(livre[nn].titre, temp[0]);
+            strcpy(livre[nn].auteur, temp[1]);
+            livre[nn].date = atoi(temp[2]);
+            livre[nn].prix =atof(temp[3]);
+
             nn++;
         }
 
