@@ -34,14 +34,14 @@ int main() {
         scanf("%d",&ticket[i]);
     }
 
-
-    while(nblot<0){
+    int n = nblot;
+    while(n>0){
         nb_aleatoire = rand()%nblot;
         if(ticket[nb_aleatoire]!=0){
             i++;
             printf("Lot %d: %d \n ",(i),ticket[nb_aleatoire]);
             ticket[nb_aleatoire]=0;
-            nblot-1;
+            n--;
         }
     }
 
