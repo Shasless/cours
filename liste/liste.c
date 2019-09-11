@@ -16,6 +16,8 @@ void afficher_liste(element *);
 
 int compter(element *);
 
+int doublons(element *);
+
 int croissant(element *);
 
 element *suppr(element *, int);
@@ -174,17 +176,23 @@ int circular(element *maillon) {
 
 }
 
-int doublons(element* liste){
-    element *liste_tri = creer_maillon(liste->data);
-    element *temp = liste;
-    element *temp_2 = liste_tri;
-    while(temp->next != NULL){
-        while(temp->data < temp_2->data){
-            temp_2 = temp_2->next;
-            if (temp->data == temp_2->data)
-                return 1;
-        }
-
+int doublons(element* maillon){
+    int l[compter(maillon)];
+    int i = 0;
+    if (maillon == NULL) {
+        return 9;
+    } else {
+        printf("test");
+        element *temp = maillon;
+        while (temp->next != NULL) {
+            for(int j=0;j<i;j++){
+                if(l[j]==temp->data){
+                    return 1;
+                }}
+            l[i]=temp->data;
+            temp = temp->next;
+            i++;
+            
+        }return 0;
     }
-
 }
