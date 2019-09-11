@@ -1,183 +1,171 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-typedef struct t_maillon {
-    int info;
-    struct t_maillon* suiv;
-} t_maillon;
+typedef struct element element;
 
+struct element {
+    int data;
+    element *next;
+};
 
-t_maillon* creer_t_maillon(int n)
-{
-    t_maillon* t_maillon=malloc(sizeof(t_maillon));
-    t_maillon->info=n;
-    t_maillon->suiv=NULL;
-    return t_maillon;
-}
+element *creer_maillon(int);
 
-void aff_liste(t_maillon* liste){
-    if (liste == NULL){
-        printf("X\n");
-    }
-    else{
-        //aff_liste(liste->suiv);
-        printf("%d=>", liste->info);
-        aff_liste(liste->suiv);
-    }
-}
+element *ajouter_maillon(element *, element *, int);
 
-void free_list(t_maillon* liste){
-    if (liste != NULL){
-        free_list(liste->suiv);
-        free(liste);
-    }
-}
+void afficher_liste(element *);
 
-void ajouter_end(t_maillon** l, t_maillon* e){
-    if(*l == NULL){
-        *l = e;
-    }
-    else{
-        t_maillon* temp = *l;
-        while (temp->suiv != NULL){
-            temp = temp->suiv;
-        }
-        temp->suiv = e;
-    }
+int compter(element *);
 
-}
+int croissant(element *);
 
-int  compter(t_maillon** l){
-    int i=1;
-    if(*l == NULL){
-            return 0;
-    }
-    else{
-        t_maillon* temp = *l;
-        while (temp->suiv != NULL){
-            temp = temp->suiv;
-            i++;
-        }
+element *suppr(element *, int);
 
-    }
-    return i;
-}
-int  trouver(t_maillon** l,int a){
-    int i=1;
-    if(*l == NULL){
-        return 0;
-    }
-    else{
-        t_maillon* temp = *l;
-        while (temp->suiv != NULL && temp->info!=a){
-            temp = temp->suiv;
-            i++;
-        }
-        if(temp->suiv == NULL && temp->info!=a){
-            return 0;
-        }
+void inverse(element **);
 
-    }
-    return i;
-}
-int  iteration(t_maillon** l,int a){
-    int i=0;
-    if(*l == NULL){
-        return 0;
-    }
-    else{
-        t_maillon* temp = *l;
-        while (temp->suiv != NULL ){
-            temp = temp->suiv;
-            if(temp->info==a){
-                i++;
-            }
-
-        }
-
-    }
-    return i;
-}
-
-void aff_liste1sur2(t_maillon* liste,int a){
-    if (liste != NULL)
-       {
-        if(a%2==0){
-            printf("%d ", liste->info);
-        }
-        a++;
-        aff_liste1sur2(liste->suiv,a);
-    }
-}
-char*  croissant(t_maillon** l){
-
-    if(*l == NULL){
-        return "NULL";
-    }
-    else{
-        t_maillon* temp = *l;
-        while (temp->suiv != NULL ){
-            if(temp->info>temp->suiv->info){
-                return "FAUX";
-            }
-            temp = temp->suiv;
-
-
-        }
-
-    }
-    return "VRAIX";
-}
-
-/*  EN COURS DE CODAGE
-void decaledroite(t_maillon** l){
-    if(*l == NULL){
-        *l = e;
-    }
-    else{
-        t_maillon* temp = *l;
-        while (temp->suiv != NULL){
-            temp = temp->suiv;
-        }
-        temp->suiv = e;
-    }
-
-}
-void ajouter(t_maillon** l, t_maillon* e, int a){
-    int i=0;
-    if(*l == NULL || a==0){
-
-        *l = e;
-    }
-    else{
-        t_maillon* temp = *l;
-        while (temp->suiv != NULL){
-            temp = temp->suiv;
-        }
-        temp->suiv = e;
-    }
-
-}*/
-int main()
-{
-    t_maillon* ma_liste = creer_t_maillon(5);
-    ajouter_end(&ma_liste, creer_t_maillon(6));
-    ajouter_end(&ma_liste, creer_t_maillon(7));
-    ajouter_end(&ma_liste, creer_t_maillon(8));
-    aff_liste(ma_liste);
-    printf(" compter :%d\n",compter(&ma_liste));
-    printf(" trouver 6 : %d\n",trouver(&ma_liste,6));
-    printf(" iteration 8 : %d\n",iteration(&ma_liste,7));
-    aff_liste1sur2(ma_liste,0);
-    printf("\n croissant : %s\n",croissant(&ma_liste));
-
-
-    free_list(ma_liste);
-    ma_liste = NULL;
-
-
+int main() {
+    element *liste = creer_maillon(10);
+    element *temp = creer_maillon(15);
+    liste = ajouter_maillon(temp, liste, -1);
+    temp = creer_maillon(20);
+    liste = ajouter_maillon(temp, liste, -1);
+    temp = creer_maillon(25);
+    liste = ajouter_maillon(temp, liste, -1);
+    temp = creer_maillon(30);
+    liste = ajouter_maillon(temp, liste, -1);
+    temp = creer_maillon(35);
+    liste = ajouter_maillon(temp, liste, -1);
+    temp = creer_maillon(45);
+    liste = ajouter_maillon(temp, liste, -1);
+    afficher_liste(liste);
+    int taille = compter(liste);
+    printf("La liste contient %d elements\n", taille);
+    printf("La liste est dans l'ordre croissant : %d\n", croissant(liste));
+    liste = suppr(liste, 2);
+    taille = compter(liste);
+    afficher_liste(liste);
+    printf("La liste contient %d elements\n", taille);
+    inverse(&liste);
+    afficher_liste(liste);
     return 0;
 }
 
+element *ajouter_maillon(element *maillon, element *debut, int position) {
+    if (position != 0) {
+        int i = 0;
+        element *temp = debut;
+        while (temp->next != NULL) {
+            i++;
+            if (i == position - 1)
+                break;
 
+            temp = temp->next;
+
+        }
+        maillon->next = temp->next;
+        temp->next = maillon;
+    } else {
+        maillon->next = debut;
+        debut = maillon;
+    }
+    return debut;
+}
+
+element *creer_maillon(int _data) {
+    element *maillon = NULL;
+    maillon = malloc(sizeof(element));
+    maillon->data = _data;
+    maillon->next = NULL;
+    return maillon;
+}
+
+void afficher_liste(element *liste) {
+    if (liste == NULL) {
+        printf("X\n");
+    } else {
+        printf("%d->", liste->data);
+        afficher_liste(liste->next);
+    }
+}
+
+int compter(element *maillon) {
+    int i = 1;
+    if (maillon == NULL) {
+        return 0;
+    } else {
+        element *temp = maillon;
+        while (temp->next != NULL) {
+            temp = temp->next;
+            i++;
+        }
+
+    }
+    return i;
+}
+
+int croissant(element *maillon) {
+    if (maillon == NULL)
+        return 0;
+    else {
+        element *temp = NULL;
+        temp = maillon;
+        while (temp->next) {
+            if (temp->data > temp->next->data)
+                return 0;
+            temp = temp->next;
+        }
+
+    }
+    return 1;
+
+}
+
+element *suppr(element *debut, int position) {
+    if (position != 0) {
+        int i = 0;
+        element *temp = debut;
+        while (temp->next != NULL) {
+            i++;
+            if (i == position)
+                break;
+
+            temp = temp->next;
+
+        }
+        temp->next = temp->next->next;
+
+    } else {
+        element *temp = debut;
+        debut = debut->next;
+        free(temp);
+    }
+    return debut;
+
+}
+
+void inverse(element **debut) {
+    element *precedent = NULL;
+    element *actuel = NULL;
+    actuel = *debut;
+    while (actuel != NULL) {
+        element *suivant = actuel->next;
+        actuel->next = precedent;
+        precedent = actuel;
+        actuel = suivant;
+    }
+    *debut = precedent;
+}
+
+int doublons(element* liste){
+    element *liste_tri = creer_maillon(liste->data);
+    element *temp = liste;
+    element *temp_2 = liste_tri;
+    while(temp->next != NULL){
+        while(temp->data < temp_2->data){
+            temp_2 = temp_2->next;
+            if (temp->data == temp_2->data)
+                return 1;
+        }
+
+    }
+
+}
