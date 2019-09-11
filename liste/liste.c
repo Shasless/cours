@@ -22,6 +22,8 @@ element *suppr(element *, int);
 
 void inverse(element **);
 
+int circular(element *);
+
 int main() {
     element *liste = creer_maillon(10);
     element *temp = creer_maillon(15);
@@ -153,6 +155,23 @@ void inverse(element **debut) {
         actuel = suivant;
     }
     *debut = precedent;
+}
+
+int circular(element *maillon) {
+    if (maillon == NULL) {
+        return 0;
+    } else {
+        element *temp = maillon;
+         do{
+            temp = temp->next;
+        }while(temp->next != NULL && temp->next != maillon->next);
+         
+        if(temp->next == maillon->next){
+            return 1;
+        }
+        return 0;
+    }
+
 }
 
 int doublons(element* liste){
